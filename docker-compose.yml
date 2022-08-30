@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566-4599:4566-4599"
+    environment:
+      - SERVICES=sqs:4566
+      - DEBUG=${DEBUG- }
+      - DATA_DIR=${DATA_DIR- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+
+  setup_resources_aws_cli:
+    image: mesosphere/aws-cli
+    volumes:
+      - ./dev_env:/project/dev_env
+    environment:
+      - AWS_ACCESS_LEY_ID=fake_key_111
+      - AWS_SECRET_ACCESS_KEY=fake_secret_access_key_111
+      - AWS_DEFAULT_REGION=sa-east-1
+    entrypoint: /bin/sh -c
+    command: >
+      "
+        sleep 20
+        aws --region sa-east-1 --no-sign-request --endpoint http://localstack:4566 sqs create-queue --queue-name cadastropessoas-main-queue
+        aws --region sa-east-1 --no-sign-request --endpoint http://localstack:4566 sqs list-queues
+        sleep 20
+      "
+    depends_on:
+      - localstack
