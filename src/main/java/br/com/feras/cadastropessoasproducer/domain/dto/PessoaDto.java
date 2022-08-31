@@ -1,6 +1,5 @@
 package br.com.feras.cadastropessoasproducer.domain.dto;
 
-import antlr.StringUtils;
 import lombok.Data;
 import java.time.LocalDate;
 
