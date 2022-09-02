@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum MessageType {
   SUCCESS(HttpStatus.OK),
   INPUT_VALIDATION(HttpStatus.BAD_REQUEST),
+  BUSINESSS_VALIDATION(HttpStatus.BAD_REQUEST),
   ERROR(HttpStatus.INTERNAL_SERVER_ERROR);
 
   private final HttpStatus httpStatus;

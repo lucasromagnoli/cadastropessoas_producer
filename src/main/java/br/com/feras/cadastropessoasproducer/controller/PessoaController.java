@@ -1,8 +1,10 @@
 package br.com.feras.cadastropessoasproducer.controller;
 
-import br.com.feras.cadastropessoasproducer.configuration.validation.ValidarPessoa;
 import br.com.feras.cadastropessoasproducer.domain.dto.PessoaDto;
-import org.springframework.http.HttpStatus;
+import br.com.feras.cadastropessoasproducer.domain.message.MessageTemplate;
+import br.com.feras.cadastropessoasproducer.domain.message.MessageType;
+import br.com.feras.cadastropessoasproducer.service.PessoaService;
+import br.com.feras.cadastropessoasproducer.validation.input.ValidarPessoa;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,14 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/pessoa")
 public class PessoaController {
 
+  private PessoaService pessoaService;
+
   @PostMapping
-  public ResponseEntity<?> adicionar(@RequestBody PessoaDto pessoaDto){
-    String erro = ValidarPessoa.validacao(pessoaDto);
+  public ResponseEntity<MessageTemplate> adicionar(@RequestBody PessoaDto pessoaDto){
+    ValidarPessoa.validacao(pessoaDto);
 
-    if(erro != null) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
-    }
+    pessoaService.enviarPraFila(pessoaDto); // throw, vai pegar e jogar pra cima (o nosso exception handler)
 
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body("Pessoa adicionada com sucesso!");
+    return MessageTemplate.builder()
+      .type(MessageType.SUCCESS)
+      .message("Solicitação de cadastro de pessoa encaminhada com sucesso.")
+      .build()
+      .toResponseEntity();
   }
 }

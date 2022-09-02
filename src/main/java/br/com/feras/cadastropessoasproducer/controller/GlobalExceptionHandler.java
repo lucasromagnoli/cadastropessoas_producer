@@ -3,6 +3,7 @@ package br.com.feras.cadastropessoasproducer.controller;
 import br.com.feras.cadastropessoasproducer.domain.message.MessageError;
 import br.com.feras.cadastropessoasproducer.domain.message.MessageTemplate;
 import br.com.feras.cadastropessoasproducer.domain.message.MessageType;
+import br.com.feras.cadastropessoasproducer.exception.CpfInvalidoException;
 import br.com.feras.cadastropessoasproducer.exception.InputValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,4 +28,5 @@ public class GlobalExceptionHandler {
       .build()
       .toResponseEntity();
   }
+
 }
