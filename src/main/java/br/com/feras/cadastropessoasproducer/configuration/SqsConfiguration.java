@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 @ToString
 @Configuration
 public class SqsConfiguration {
-
   private final String queueUrl;
   private final String queueName;
 
