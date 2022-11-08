@@ -2,27 +2,29 @@ package br.com.feras.cadastropessoasproducer.validation.business;
 
 import br.com.feras.cadastropessoasproducer.domain.dto.PessoaDto;
 import br.com.feras.cadastropessoasproducer.exception.InputValidationException;
+import br.com.feras.cadastropessoasproducer.validation.input.ValidaData;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class PessoaBusinessValidation {
   public void validar(PessoaDto pessoaDto) {
+    pessoaDto.normalizarNome();
 
-    LocalDate dataAtual = LocalDate.now();
-
-    if(dataAtual.isBefore(pessoaDto.getDataNascimento())) {
-      throw new InputValidationException("pessoa.dataNascimento", "Data Nascimento não pode ser maior do que a data atual");
+    if(!pessoaDto.getNome().matches("[A-Za-z ]+")) {
+      throw new InputValidationException("pessoa.nome", "Apenas caracteres alfabéticos são permitidos.");
     }
 
-    Integer tamanhoNome = pessoaDto.getNome().trim().split(" ").length;
-
-    if(tamanhoNome <= 1) {
-      throw new InputValidationException("pessoa.nome", "É preciso informar um nome e um sobrenome");
+    if(pessoaDto.getNome().length() < 2 || pessoaDto.getNome().length() > 255){
+      throw new InputValidationException("pessoa.nome", "Nome deve conter no mínimo 2 caracteres e no máximo 255");
     }
 
-    // Cpf já existe no banco de dados?
+    if(!ValidaData.isDataValida(pessoaDto.getDataNascimento())) {
+      throw new InputValidationException("pessoa.dataNascimento", "Idade deve ser maior que 18 anos.");
+    }
 
   }
+
 }

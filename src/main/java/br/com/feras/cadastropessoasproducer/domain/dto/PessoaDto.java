@@ -8,7 +8,14 @@ public class PessoaDto {
 
   private String nome;
   private String cpf;
-  private LocalDate dataNascimento;
+  private String dataNascimento;
+
+  public void normalizarNome(){
+    String nomeNormalizado = this.getNome().trim();
+    nomeNormalizado = nomeNormalizado.replaceAll("\\s+", " ");
+
+    this.setNome(nomeNormalizado);
+  }
 
 }
 

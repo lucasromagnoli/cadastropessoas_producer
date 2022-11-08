@@ -20,6 +20,10 @@ public class ValidarPessoa {
     if (pessoa.getDataNascimento() == null) {
       throw new InputValidationException("pessoa.getDataNascimento", "Data de nascimento não pode ser vazio");
     }
+
+    if (!ValidaData.isFormatoDataValido(pessoa.getDataNascimento())) {
+      throw new InputValidationException("pessoa.getDataNascimento", "Formato de data inválido.");
+    }
   }
 }
 
