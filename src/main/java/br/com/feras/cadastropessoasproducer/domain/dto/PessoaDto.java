@@ -13,13 +13,17 @@ public class PessoaDto {
   private String estadoCivil;
   private String sexo;
   private String cidadeNascimento;
-  private Cidade cidade;
+  private CidadeNascimento cidade;
+  private Email email;
+  private Telefone telefone;
+  private Endereco endereco;
 
   public void normalizarCampos() {
     this.normalizarNome();
     this.normalizarNacionalidade();
     this.normalizarSexo();
     this.normalizarCidade();
+    this.normalizarEmail();
   }
 
   public void normalizarNome(){
@@ -40,6 +44,14 @@ public class PessoaDto {
   public void normalizarCidade(){
     String cidadeNormalizada = normalizarTexto(this.getCidadeNascimento());
     this.setCidadeNascimento(cidadeNormalizada);
+  }
+
+  public void normalizarEmail(){
+    if(this.getEmail() == null || this.getEmail().getValorEmail() == null) {
+      return;
+    }
+    String emailNormalizado = normalizarTexto(this.getEmail().getValorEmail());
+    this.getEmail().setValorEmail(emailNormalizado);
   }
 
   private String normalizarTexto(String texto) {

@@ -1,6 +1,6 @@
 package br.com.feras.cadastropessoasproducer.validation.input;
 
-import br.com.feras.cadastropessoasproducer.domain.dto.Cidade;
+import br.com.feras.cadastropessoasproducer.domain.dto.CidadeNascimento;
 import br.com.feras.cadastropessoasproducer.domain.dto.PessoaDto;
 
 public enum PessoaCidadeNascimento {
@@ -26,7 +26,7 @@ public enum PessoaCidadeNascimento {
   public static boolean isCidadeValidaRetornaObjeto(PessoaDto pessoa) {
     for (PessoaCidadeNascimento cidadeEnum : PessoaCidadeNascimento.values()) {
       if (cidadeEnum.nomeCidade.equalsIgnoreCase(pessoa.getCidadeNascimento())) {
-        Cidade cidade = new Cidade(cidadeEnum.nomeCidade, cidadeEnum.nomeEstado, cidadeEnum.siglaEstado, cidadeEnum.nomePais, cidadeEnum.siglaPais);
+        CidadeNascimento cidade = new CidadeNascimento(cidadeEnum.nomeCidade, cidadeEnum.nomeEstado, cidadeEnum.siglaEstado, cidadeEnum.nomePais, cidadeEnum.siglaPais);
         pessoa.setCidade(cidade);
         return true;
       }
